@@ -1,4 +1,4 @@
-﻿# C52 SFDC
+﻿# Salesforce Apps
 This is the project that contains the code related to the sfdc org.
 
 ## Setup Local Machine
