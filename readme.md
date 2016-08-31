@@ -1,4 +1,4 @@
-﻿# Salesforce Apps
+﻿## Salesforce Apps
 This is the project that contains the code related to apps in the sfdc org.
 
 ## Setup Local Machine
@@ -8,7 +8,7 @@ This is the project that contains the code related to apps in the sfdc org.
 ```
 env.dev.username=[your dev org username]
 env.dev.password=[your dev org user's password]
-env.dev.endpoint=https://c52--[theoDev].cs22.my.salesforce.com # replace [theoDev] with your instance name
+env.dev.endpoint=https://c52--[theoDev].cs22.my.salesforce.com  ### replace [theoDev] with your instance name
 
 path.temp=[./your/build/temp/directory]
 ```
