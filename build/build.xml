@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<project name="c52_deploy" default="help" basedir="." xmlns:sf="antlib:com.salesforce" xmlns:ac="antlib:net.sf.antcontrib">
+  
+  <property file="local.build.properties" />
+  <property file="build.properties"/>
+  
+  <import file="ant-salesforce.xml" />
+
+  <target name="help" description="default target - lists targets available for use">
+    <echo>targets for use</echo>
+    <echo>deployAll - deploys all code</echo>
+    <echo>deploy[App]All - deploys all code for a specific app</echo>
+    <echo>deploy[App]Classes - deploys all class files for a specific app</echo>
+  </target>
+
+  <target name="deployDependencies" description="deploys all the dependent code files" depends="cleanTemp">
+    <echo>Deploying fflip mocks</echo>
+    <copy todir="${path.temp}" flatten="false" includeEmptyDirs="false">
+      <fileset dir="../source/dependencies/fflib/mocks/src">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <deploy />
+    <antcall target="cleanTemp" />
+    <echo>Deploying fflib common</echo>
+    <copy todir="${path.temp}" flatten="false" includeEmptyDirs="false">
+      <fileset dir="../source/dependencies/fflib/common/fflib/src">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <deploy />
+  </target>
+  
+  <macrodef name="deploy">
+    <attribute name="deployUsername" default="${env.dev.username}"/>
+    <attribute name="deployPassword" default="${env.dev.password}"/>
+    <attribute name="deployServerUrl" default="${env.dev.endpoint}"/>
+    <attribute name="deployRoot" default="${path.temp}"/>
+    <attribute name="runTests" default="false"/>
+    <sequential>
+      <echo>deploying as: @{deployUsername}</echo>
+      <echo>deploying cred: @{deployPassword}</echo>
+      <echo>deploying to: @{deployServerUrl}</echo>
+      <echo>deploying from: @{deployRoot}</echo>
+      
+      <sf:deploy username="@{deployUsername}"
+                 password="@{deployPassword}"
+                 serverurl="@{deployServerUrl}"
+                 deployRoot="@{deployRoot}"
+                 pollWaitMillis="1000"
+                 runAllTests="@{runTests}" />
+    </sequential>
+        
+  </macrodef>
+  
+  <target name="cleanTemp">
+    <echo message="Cleaning temp directory: ${path.temp}" />
+    <delete dir="${path.temp}" />
+    <mkdir dir="${path.temp}" />
+  </target>
+
+</project>

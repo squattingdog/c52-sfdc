@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="PermissionsBuild" basedir="." xmlns:sf="antlib:com.salesforce" xmlns:ac="antlib:net.sf.antcontrib">
+	
+	<import file="ant-salesforce.xml" />
+	
+	<target name="unassignAllPermissionSets" description="removes all MC_ permissions from the user">
+		<property name="namespace" value="" description="the namespace of the org." />
+		<echo>ns: ${namespace}</echo>
+		<ac:if>
+			<or>
+				<equals arg1="${namespace}" arg2="" />
+				<equals arg1="${namespace}" arg2="$${env.namespace}" />
+			</or>
+			<then>
+				<fail>unassignAllPermissionSets - namespace property was not provided.</fail>
+			</then>
+			<else>
+				<echo message="removing all MC permissionSets from all users." />
+				<executeApex username="${env.login}" password="${env.password}">
+					<![CDATA[		
+						String namespace = '${namespace}';
+						if(!String.IsNotBlank(namespace)) 
+							return 0;
+							
+						List<User> users = [SELECT ID FROM User];
+						if(users == null || users.size() < 1)
+							return 0;
+
+						List<ID> userIDs = new List<ID>();
+						for(User u : users) {
+							userIds.add(u.ID);
+						}
+
+						List<PermissionSetAssignment> assignedPermSets = [SELECT ID FROM PermissionSetAssignment WHERE AssigneeId IN: userIDs AND PermissionSet.NamespacePrefix = :namespace AND PermissionSet.Name LIKE 'MC_%'];
+
+						if(assignedPermSets != null && assignedPermSets.size() > 0)
+							DELETE assignedPermSets;
+
+						return 0;
+					]]>
+				</executeApex>
+			</else>
+		</ac:if>
+	</target>
+	
+	<target name="assignPermissionSets" description="adds the specified MC_ permissionSets to the specified user">
+		<property name="username" value="" description="the user to which the permissionSets are assigned." />
+		<property name="permSetList" value="" description="the list of permissionSet names to assign as csv." />
+		<property name="namespace" value="" description="the namespace of the org." />
+		<echo>user: ${username}</echo>
+		<echo>pList: ${permSetList}</echo>
+		<echo>ns: ${namespace}</echo>
+		<ac:if>
+			<or>
+				<equals arg1="${username}" arg2="" />
+				<equals arg1="${username}" arg2="$${env.username}" />
+				<equals arg1="${namespace}" arg2="" />
+				<equals arg1="${namespace}" arg2="$${env.namespace}" />
+				<equals arg1="${permSetList}" arg2="" />
+				<equals arg1="${permSetList}" arg2="$${env.permSetList}" />
+			</or>
+			<then>
+				<echo message="Skipping permissionSet Assignment - a required property was not provided." />
+			</then>
+			<else>
+				<echo message="Assigning ${permSetList} to ${username}" />
+				<executeApex username="${env.login}" password="${env.password}">
+					<![CDATA[
+						String namespace = '${namespace}';
+						if(!String.IsNotBlank(namespace))
+							return 0;
+						
+						List<User> users = [SELECT ID FROM User WHERE username = '${username}'];
+						if(users == null || users.size() < 1)
+							return -1;
+
+						User u = users[0];
+						String permSetCsv = '${permSetList}';
+						if(!String.IsNotBlank(permSetCsv))
+							return 0;
+
+						List<String> permSetNames = permSetCsv.replace(' ', '').split(',');
+						List<PermissionSet> permSets = [SELECT ID FROM PermissionSet WHERE Name IN :permSetNames AND NamespacePrefix = :namespace];
+						if(permSets == null || permSets.size() < 1)
+							return 0;
+
+						List<PermissionSetAssignment> permSetAsgmts = new List<PermissionSetAssignment>();
+						for(PermissionSet p : permSets) {
+              List<PermissionSetAssignment> psas = [SELECT ID FROM PermissionSetAssignment WHERE AssigneeId = :u.ID AND PermissionSetId = :p.ID];
+              if(psas == null || psas.size() < 1)               
+							  permSetAsgmts.add(new PermissionSetAssignment(AssigneeId = u.ID, PermissionSetId = p.ID));
+						}
+
+						INSERT permSetAsgmts;
+					]]>
+				</executeApex>
+			</else>
+		</ac:if>
+	</target>
+	
+	<target name="unassignManageProfile" description="removes the System Administrator - Manage profile from all users in the org. assigns them to the System Administrator profile">
+		<echo message="username: ${env.login}" />
+		<echo message="password: ${env.password}" />
+		<executeApex username="${env.login}" password="${env.password}">
+			<![CDATA[
+				Profile manProfile = null;
+				Profile sysAdminProfile = null;
+				List<Profile> profiles = [SELECT ID, Name FROM Profile];
+				for(Profile p : profiles) {
+					if(p.Name == 'System Administrator - Manage')
+						manProfile = p;
+					else if(p.Name == 'System Administrator')
+						sysAdminProfile = p;
+				}
+
+				if(manProfile == null)
+					return 0;
+
+				if(sysAdminProfile == null)
+					return -10;
+
+				List<User> users = [SELECT ID FROM User WHERE ProfileID = :manProfile.ID AND Username <> '2015_02@sf.com'];
+				if(users.size() < 1)
+					return 0;
+
+				for(User u : users) {
+					u.profileId = sysAdminProfile.ID;
+				}
+
+				update users;
+				return 0;
+			]]>
+		</executeApex>
+	</target>
+	
+	<target name="assignManageProfile" description="Assigns the System Administrator - Manage profile to the user specified by username.">
+		<property name="username" value="" description="the user to assign the profile - cannot be the authenticating user." />
+		<echo message="username to assign: ${username}" />
+		<ac:if>
+			<equals arg1="${username}" arg2="" />
+			<then>
+				<fail>AssignManageProfile: username property not set.</fail>
+			</then>
+			<elseif>
+				<equals arg1="${username}" arg2="${env.login}" />
+				<then>
+					<fail>AssignManageProfile: assigning username is the same as the authenticating username.</fail>
+				</then>
+			</elseif>
+			<else>
+				<executeApex username="${env.login}" password="${env.password}">
+					<![CDATA[
+						Profile p = [SELECT ID FROM Profile WHERE Name = 'System Administrator - Manage'];
+
+						//if profile not found, return as error.
+						if(p == null)
+							return -10;
+
+						User u = [SELECT ID FROM User WHERE username = '${username}'];
+						u.profileId = p.ID;
+						update u;
+
+						//all good.
+						return 0;
+					]]>
+				</executeApex>
+			</else>
+		</ac:if>
+	</target>
+  
+</project>

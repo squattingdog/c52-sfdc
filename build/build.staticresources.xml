@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="StaticResourcesBuild" basedir="." xmlns:sf="antlib:com.salesforce" xmlns:ac="antlib:net.sf.antcontrib">
+
+  <target name="deploy">
+    <antcall target="cleanTemp" />
+    <!--<exec executable="${exe.McForceBuild}" failonerror="true">
+			<arg value="/b" />
+			<arg value="tempDir=${path.temp}" />
+			<arg value="version=31.0" />
+		</exec>-->
+    <!-- Deploy -->
+    <antcall target="__deploy">
+      <param name="shouldCleanTemp" value="false" />
+      <param name="shouldDeployStaticResources" value="true" />
+    </antcall>
+  </target>
+
+  <target name="buildAll" depends="cleanStaticResourcesDirectory">
+    <antcall target="sr.buildImages" />
+    <antcall target="sr.buildJS" />
+    <antcall target="sr.buildCSS" />
+    <antcall target="sr.buildBootstrap" />
+    <antcall target="sr.buildTheme" />
+    <antcall target="sr.buildInspiniaFull" />
+    <antcall target="sr.buildFuelUX" />
+    <antcall target="sr.buildAngular" />
+    <antcall target="sr.buildAngularModules" />
+
+    <!-- Deploy theme ONLY when specified 
+		<ac:if><not><isset property="deployTheme" /></not><then><property name="deployTheme" value="false" /></then></ac:if>
+		<ac:if><equals arg1="${deployTheme}" arg2="true" /><then><antcall target="sr.buildTheme" /></then></ac:if>-->
+
+    <copy todir="${path.temp}/staticresources" flatten="true" includeEmptyDirs="false">
+      <fileset dir="${path.source}/staticresources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="buildImages" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/McForceImages.resource" basedir="${path.source}/assets/images" update="no" />
+    <copy file="${path.source}/assets/McForceImages.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildJS" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/McForceJS.resource" basedir="${path.source}/assets/js" update="no" />
+    <copy file="${path.source}/assets/McForceJS.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildCSS" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/McForceCSS.resource" basedir="${path.source}/assets/css" update="no" />
+    <copy file="${path.source}/assets/McForceCSS.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildBootstrap" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/Bootstrap.resource" basedir="${path.source}/assets/bootstrap" update="no" />
+    <copy file="${path.source}/assets/Bootstrap.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildTheme" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/McForceTheme.resource" basedir="${path.source}/assets/theme" update="no" />
+    <copy file="${path.source}/assets/McForceTheme.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildFuelUX" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/FuelUX.resource" basedir="${path.source}/assets/fuelux" update="no" />
+    <copy file="${path.source}/assets/FuelUX.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildAngular" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/Angular.resource" basedir="${path.source}/assets/angular" update="no" />
+    <copy file="${path.source}/assets/Angular.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildAngularModules" depends="ensureDirExists">
+    <zip destFile="${path.temp.staticresources}/AngularModules.resource" basedir="${path.source}/assets/angularModules" update="no" />
+    <copy file="${path.source}/assets/AngularModules.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+  </target>
+
+  <target name="buildInspiniaFull" depends="ensureDirExists">
+    <!-- Copy Theme Assets -->
+    <copy todir="${path.temp.staticresources}/inspinia" overwrite="true" flatten="false">
+      <fileset dir="${path.util}/Theme/InspiniaFull/Static_Full_Version">
+        <include name="css/**/*" />
+        <exclude name="css/style.min.css" />
+        <exclude name="css/style.css" />
+        <include name="font-awesome/**/*" />
+        <include name="fonts/**/*" />
+        <include name="js/**/*" />
+      </fileset>
+    </copy>
+    <copy file="${path.source}/assets/theme/style.min.css" todir="${path.temp.staticresources}/inspinia/css" overwrite="true" />
+    <copy file="${path.source}/assets/theme/style.css" todir="${path.temp.staticresources}/inspinia/css" overwrite="true" />
+    <!-- Copy META -->
+    <copy file="${path.source}/assets/InspiniaFull.resource-meta.xml" todir="${path.temp.staticresources}" overwrite="true" />
+    <!-- ZIP -->
+    <zip destFile="${path.temp.staticresources}/InspiniaFull.resource" basedir="${path.temp.staticresources}/inspinia" update="yes" />
+    <!-- Delete inspinia directory -->
+    <delete includeEmptyDirs="true">
+      <fileset dir="${path.temp.staticresources}/inspinia" />
+    </delete>
+  </target>
+
+  <target name="rebuildBootstrap">
+    <input message="Make sure the assets/bootstrap folder is checked out and press Enter to continue..." />
+    <!-- Build / Compile -->
+    <exec dir="${path.util}/Bootstrap/source" executable="grunt.cmd" failonerror="true">
+      <arg value="dist" />
+    </exec>
+    <!-- Copy files -->
+    <copy todir="${path.source}/assets/bootstrap" overwrite="true" flatten="false">
+      <fileset dir="${path.util}/Bootstrap/source/dist">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="rebuildTheme">
+    <input message="Make sure the assets/theme folder is checked out and press Enter to continue..." />
+    <!-- Copy files -->
+    <copy todir="${path.source}/assets/theme" overwrite="true" flatten="false">
+      <fileset dir="${path.util}/Theme/Inspinia/Static_full_version">
+        <include name="css/**/*" />
+        <exclude name="css/bootstrap**.*" />
+        <exclude name="css/style**.*" />
+        <exclude name="css/plugins/codemirror**/*" />
+        <include name="font-awesome/**/*" />
+        <include name="fonts/**/*" />
+        <include name="js/**/*" />
+        <exclude name="js/bootstrap**.*" />
+        <exclude name="js/jquery-2.1.1.js" />
+        <exclude name="js/inspinia.js" />
+        <exclude name="js/plugins/codemirror**/*" />
+      </fileset>
+    </copy>
+    <!-- Rebuild theme CSS from LESS -->
+    <antcall target="sr.rebuildThemeCSS" />
+  </target>
+
+  <target name="rebuildThemeCSS">
+    <copy file="${path.source}/assets/theme/mcforce-ui.less" todir="${path.util}/Theme/InspiniaFull/Static_Full_Version/LESS" overwrite="true" />
+    <exec executable="lessc.cmd" failonerror="true">
+      <arg value="-x" />
+      <arg value="&quot;${path.util}/Theme/InspiniaFull/Static_Full_Version/LESS/mcforce-ui.less&quot; > &quot;${path.source}/assets/theme/style.min.css&quot;" />
+    </exec>
+    <exec executable="lessc.cmd" failonerror="true">
+      <arg value="&quot;${path.util}/Theme/InspiniaFull/Static_Full_Version/LESS/mcforce-ui.less&quot; > &quot;${path.source}/assets/theme/style.css&quot;" />
+    </exec>
+    <delete file="${path.util}/Theme/InspiniaFull/Static_Full_Version/LESS/mcforce-ui.less" />
+  </target>
+
+  <target name="cleanStaticResourcesDirectory" depends="ensureDirExists">
+    <delete includeEmptyDirs="true">
+      <fileset dir="${path.temp}/staticresources" includes="**/*" />
+    </delete>
+  </target>
+
+  <target name="ensureDirExists">
+    <available file="${path.temp.staticresources}" type="dir" property="srPathExists" />
+    <ac:if>
+      <isset property="srPathExists" />
+      <then>
+        <echo message="directory exists, skipping" />
+      </then>
+      <else>
+        <echo message="create directory" />
+        <mkdir dir="${path.temp.staticresources}" />
+      </else>
+    </ac:if>
+  </target>
+
+</project>

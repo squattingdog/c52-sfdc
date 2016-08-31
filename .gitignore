@@ -1,0 +1,5 @@
+local.build.properties
+bin
+obj
+.git
+.vs

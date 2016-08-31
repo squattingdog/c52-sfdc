@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ClassesBuild" basedir="." xmlns:sf="antlib:com.salesforce" xmlns:ac="antlib:net.sf.antcontrib">
+	
+	<target name="deploy" depends="buildAll">
+		<exec executable="${exe.McForceBuild}" failonerror="true">
+			<arg value="/b" />
+			<arg value="tempDir=${path.temp}" />
+			<arg value="version=31.0" />
+		</exec>
+		<sf:deploy username="${env.login}" password="${env.password}" serverurl="${env.endpoint}" deployRoot="${path.temp}" pollWaitMillis="1000" />
+	</target>
+	
+	<target name="buildAll" depends="cleanClassesDirectory">
+		<echo message="Classes->buildAll" />
+		<copy todir="${path.temp}/classes" flatten="true" includeEmptyDirs="false">
+			<fileset dir="${path.source}/classes">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="buildTests" depends="cleanClassesDirectory">
+		<copy todir="${path.temp}/classes" flatten="true" includeEmptyDirs="false">
+			<fileset dir="${path.source}/classes/tests">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="cleanClassesDirectory" depends="ensureDirExists">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${path.temp.classes}" includes="**/*" />
+		</delete>
+	</target>
+	
+	<target name="ensureDirExists">
+		<available file="${path.temp.classes}" type="dir" property="clsPathExists" />
+		<ac:if>
+			<isset property="clsPathExists" />
+			<then>
+				<echo message="directory exists, skipping" />
+			</then>
+			<else>
+				<echo message="create directory" />
+				<mkdir dir="${path.temp.classes}" />
+			</else>
+		</ac:if>
+	</target>
+	
+</project>
