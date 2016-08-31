@@ -1,4 +1,5 @@
-﻿# Salesforce Apps
+﻿
+# Salesforce Apps
 This is the project that contains the code related to apps in the sfdc org.
 
 ## Setup Local Machine
