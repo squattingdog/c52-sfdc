@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
-<project name="c52_deploy" default="help" basedir="." xmlns:sf="antlib:com.salesforce" xmlns:ac="antlib:net.sf.antcontrib">
+<project name="c52_deploy" default="help" basedir="." xmlns:sf="antlib:com.salesforce" xmlns:ext="antlib:com.salesforce.ant.ant_migration_ext">
   
   <property file="local.build.properties" />
   <property file="build.properties"/>
   
   <import file="ant-salesforce.xml" />
+  
+  <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${jars.home}/ant-contrib-1.0b3.jar"/>
+	<taskdef resource="net/sf/antcount/antlib.xml" classpath="${jars.home}/antcount.jar"/>
+	<taskdef uri="antlib:com.salesforce.ant.ant_migration_ext" resource="antlib.xml" classpath="${jars.home}/ant-migration-extension.jar" />
+	<taskdef name="deploy" classname="com.salesforce.ant.DeployTask" classpath="${jars.home}/ant-salesforce.jar"/>  
 
   <target name="help" description="default target - lists targets available for use">
     <echo>targets for use</echo>
@@ -15,7 +20,7 @@
 
   <target name="deployDependencies" description="deploys all the dependent code files" depends="cleanTemp">
     <echo>Deploying fflip mocks</echo>
-    <copy todir="${path.temp}" flatten="false" includeEmptyDirs="false">
+    <copy todir="${build.temp}" flatten="false" includeEmptyDirs="false">
       <fileset dir="../source/dependencies/fflib/mocks/src">
         <include name="**/*" />
       </fileset>
@@ -23,7 +28,7 @@
     <deploy />
     <antcall target="cleanTemp" />
     <echo>Deploying fflib common</echo>
-    <copy todir="${path.temp}" flatten="false" includeEmptyDirs="false">
+    <copy todir="${build.temp}" flatten="false" includeEmptyDirs="false">
       <fileset dir="../source/dependencies/fflib/common/fflib/src">
         <include name="**/*" />
       </fileset>
@@ -31,11 +36,24 @@
     <deploy />
   </target>
   
+  <target name="deployCommon" depends="cleanTemp">
+    	<copy todir="${build.temp}/classes" flatten="true" includeEmptyDirs="false">
+    		<fileset dir="../source/common/classes">
+          <include name="**/*" />
+        </fileset>
+    	</copy>
+
+		<ext:package packageFile="${build.temp}/package.xml" buildTemp="${build.temp}" apiVersion="${build.apiVersion}"/>
+
+		<deploy />
+
+  </target>
+  
   <macrodef name="deploy">
     <attribute name="deployUsername" default="${env.dev.username}"/>
     <attribute name="deployPassword" default="${env.dev.password}"/>
     <attribute name="deployServerUrl" default="${env.dev.endpoint}"/>
-    <attribute name="deployRoot" default="${path.temp}"/>
+    <attribute name="deployRoot" default="${build.temp}"/>
     <attribute name="runTests" default="false"/>
     <sequential>
       <echo>deploying as: @{deployUsername}</echo>
@@ -54,9 +72,9 @@
   </macrodef>
   
   <target name="cleanTemp">
-    <echo message="Cleaning temp directory: ${path.temp}" />
-    <delete dir="${path.temp}" />
-    <mkdir dir="${path.temp}" />
+    <echo message="Cleaning temp directory: ${build.temp}" />
+    <delete dir="${build.temp}" />
+    <mkdir dir="${build.temp}" />
   </target>
 
 </project>

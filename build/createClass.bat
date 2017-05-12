@@ -43,7 +43,7 @@ REM setup default values / basic error checking
 IF %ClassName%=="" GOTO CLASSNAME_NOT_SPECIFIED
 IF %TestClassSwitch%=="" SET TestClassSwitch=0
 IF NOT %FolderName%=="" SET FolderName=\%FolderName%
-IF %Version%=="" SET Version=31.0
+IF %Version%=="" SET Version=37.0
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
