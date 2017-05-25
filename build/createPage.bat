@@ -7,6 +7,7 @@ SET IncludeControllerClass=""
 SET ControllerClassName=""
 SET Version=""
 SET tab=	
+SET SourceFolderType="common"
 
 REM *******************************************************************************************************************
 REM Setup vars based on passed in args
@@ -32,6 +33,9 @@ IF NOT "%1" =="" (
 	IF "%1"=="/v" (
 		SET Version=%~2
 	)
+	IF "%1"=="/a" (
+		SET SourceFolderType=%~2
+	)
 	
 	SHIFT & SHIFT
 	GOTO PROCESS_ARGS
@@ -45,7 +49,7 @@ IF %Version%=="" SET Version=31.0
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
-SET SourceDir=%CD%\..\source
+SET SourceDir=%CD%\..\source\\%SourceFolderType%
 SET FileName=%PageName%.page
 SET MetaFileName=%FileName%-meta.xml
 
@@ -108,7 +112,7 @@ IF NOT %IncludeControllerClass%==1 GOTO COMPLETE
 CALL :echoColor Yellow "Creating classes."
 REM create the contorller class, class meta, test class and test meta files
 CD "%ExecutingDir%"
-CALL createClass /n %ControllerClassName% /s 1 /f controllers /v %Version% /c 1
+CALL createClass /n %ControllerClassName% /s 1 /f controllers /v %Version% /c 1 /a %SourceFolderType%
 GOTO COMPLETE
 
 
@@ -135,15 +139,16 @@ GOTO END
 :DISPLAY_USAGE
 @ECHO ...
 ECHO Usage:
-ECHO createPage /n [/c /i /v]
+ECHO createPage /n [/c /i /v /a]
 ECHO.
 ECHO /n: page name - the name of the page to create - used for file name and meta label text.
 ECHO /c: controller class name - the value set in the controller attribute of the page.
 ECHO /i: include creating the controller class.  set to 1 for true anything else for false.
 ECHO /v: version - the sf api version (default is 31.0)
+ECHO /a: 2nd tier directory under $root.  i.e. $root/source/[dir] (default is "common")
 ECHO.
 ECHO Example usage:
-ECHO %tab%createPage /n MC_Account [/v 33.0 /i 1 /c MC_AccountController]
+ECHO %tab%createPage /n MC_Account [/v 33.0 /i 1 /c MC_AccountController /a myApp]
 ECHO.
 ECHO.
 GOTO :END

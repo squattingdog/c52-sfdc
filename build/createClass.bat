@@ -7,6 +7,7 @@ SET FolderName=""
 SET Version=""
 SET IsController=0
 SET tab=	
+SET SourceFolderType="common"
 
 
 REM *******************************************************************************************************************
@@ -33,6 +34,9 @@ IF NOT "%1"=="" (
 	IF "%1"=="/c" (
 		SET IsController=%~2
 	)
+	IF "%1"=="/a" (
+		SET SourceFolderType=%~2
+	)
 	
 	SHIFT & SHIFT
 	GOTO PROCESS_ARGS
@@ -47,7 +51,7 @@ IF %Version%=="" SET Version=37.0
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
-SET SourceDir=%CD%\..\source
+SET SourceDir=%CD%\..\source\\%SourceFolderType%
 SET FileName=%ClassName%.cls
 SET MetaFileName=%FileName%-meta.xml
 SET TestFileName=%ClassName%Test.cls
@@ -229,13 +233,15 @@ ECHO /c: optional - denotes a controller class and adds MC_ControllerBase items.
 ECHO %tab%%tab%Valid Values [0,1]
 ECHO %tab%%tab%%tab%0 - (default) do not include MC_ControllerBase extension
 ECHO %tab%%tab%%tab%1 - Include MC_ControllerBase extension
+ECHO /a: optional - sets the second tier directory under $root where the source is found.
+ECHO %tab%%tab%Default value is "common" i.e. $root/source/common
 ECHO.
 ECHO Example call including test class
 ECHO %tab%createClass /n yourClassName /s 1
 ECHO.
 ECHO.
-ECHO Example call including test and MC_ControllerBase extension
-ECHO %tab%createClass /n yourClassName /s 1 /c 1
+ECHO Example call including test and MC_ControllerBase extension in the myApps directory
+ECHO %tab%createClass /n yourClassName /s 1 /c 1 /a myApps
 ECHO.
 ECHO.
 GOTO :END

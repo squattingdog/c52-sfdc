@@ -2,7 +2,8 @@
 *	The Campaign Domain class which creates a domain model around sObject collections
 **/
 
-Public With sharing Class Campaigns extends fflib_SObjectDomain Implements ICampaigns {
+public with sharing class Campaigns extends fflib_SObjectDomain 
+	implements ICampaigns { //CampaignsService.ISupportCampaignDTO
 	
 	/*
 	* Parameters:
@@ -12,7 +13,7 @@ Public With sharing Class Campaigns extends fflib_SObjectDomain Implements ICamp
 	* Description:
 	* 	returns a New instance of the mktg_Campaigns class cast as its interface
 	*/
-	Public Static ICampaigns newInstance(List<Campaign> sObjectList) {
+	public static ICampaigns newInstance(List<Campaign> sObjectList) {
 		Return (ICampaigns)App.Domain.newInstance(sObjectList);
 	}
 
@@ -23,14 +24,14 @@ Public With sharing Class Campaigns extends fflib_SObjectDomain Implements ICamp
 	* Description:
 	* 	Domain classes are initialized with lists to enforce bulkification throughout
 	*/
-	Public Campaigns(List < Campaign > sObjectList) {
+	public Campaigns(List < Campaign > sObjectList) {
 		super(sObjectList);
 	}
 
 	/*
 	* This class Is used by the app to return a New instance of the mktg_Campaigns class
 	*/
-	Public Class Constructor Implements fflib_SObjectDomain.IConstructable {
+	public class Constructor implements fflib_SObjectDomain.IConstructable {
 
 		/*
 		* Parameters:
@@ -40,9 +41,17 @@ Public With sharing Class Campaigns extends fflib_SObjectDomain Implements ICamp
 		* Description:
 		* 	returns a New instance of fflib_SObjectDomain as the mktg_Campaigns class
 		*/
-		Public fflib_SObjectDomain construct(List<SObject> sObjectList){
-			Return New Campaigns(sObjectList);
+		public fflib_SObjectDomain construct(List<SObject> sObjectList){
+			return New Campaigns(sObjectList);
 		}
 	}
 	
+	/*
+	* ISupportCampaignDTO generate impl
+	*/
+	/*public void generate(CampaignDTOFactory campaignDTOFactory)	{
+		for(Campaign c : (List<Campaign>)this.Records){
+			campaignDTOFactory.add(c);
+		}
+	}*/
 }

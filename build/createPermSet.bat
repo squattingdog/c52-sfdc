@@ -3,6 +3,7 @@ ECHO.
 
 SET PermSetName=""
 SET FileName=""
+SET SourceFolderType="common"
 
 REM *******************************************************************************************************************
 REM Setup vars based on passed in args
@@ -22,6 +23,9 @@ IF NOT "%1" =="" (
 	IF "%1"=="/f" (
 		SET FileName=%~2
 	)
+	IF "%1"=="/a" (
+		SET SourceFolderType=%~2
+	)
 	
 	SHIFT & SHIFT
 	GOTO PROCESS_ARGS
@@ -39,7 +43,7 @@ IF %FileName% == "" (
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
-SET SourceDir=%CD%\..\source
+SET SourceDir=%CD%\..\source\\%SourceFolderType%
 
 
 :CREATE_PERMISSION_SET
@@ -76,13 +80,14 @@ GOTO DISPLAY_USAGE
 :DISPLAY_USAGE
 @ECHO ...
 ECHO Usage:
-ECHO createPermSet /n [/f]
+ECHO createPermSet /n [/f /a]
 ECHO.
 ECHO /n: PermSetName - the name of the permission set to create.  This is the label text.
 ECHO /f: FileName - the name of the file.  If not set, the PermSetName value will be used. 
+ECHO /a: 2nd tier directory under $root.  i.e. $root/source/[dir] (default is "common")
 ECHO.
 ECHO Example usage:
-ECHO %tab%createPermSet /n "permission set name" [/f fileName]
+ECHO %tab%createPermSet /n "permission set name" [/f fileName /a myAppDir]
 ECHO.
 ECHO.
 GOTO :END
