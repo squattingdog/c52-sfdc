@@ -14,4 +14,9 @@ global with sharing class VolunteerCampaignsV1 {
     global static List<CampaignService.CampaignDTO> getVolunteerCampaigns() {
 		return CampaignService.getInstance().getTopLevelVolunteerCampaigns();
 	}
+	
+	@HttpPost
+	global static APIResponse signupForCampaignJob(APIJobSignup signup) {
+		return new APIResponse();
+	}
 }

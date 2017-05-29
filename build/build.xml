@@ -29,25 +29,49 @@
     <antcall target="cleanTemp" />
     <echo>Deploying fflib common</echo>
     <copy todir="${build.temp}" flatten="false" includeEmptyDirs="false">
-      <fileset dir="../source/dependencies/fflib/common/fflib/src">
+      <fileset dir="../source/dependencies/fflib/common/src">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <deploy />
+  	<antcall target="cleanTemp" />
+    <echo>Deploying fflib common</echo>
+    <copy todir="${build.temp}" flatten="false" includeEmptyDirs="false">
+      <fileset dir="../source/dependencies/fflib/ffhttp/src">
         <include name="**/*" />
       </fileset>
     </copy>
     <deploy />
   </target>
   
-  <target name="deployCommon" depends="cleanTemp">
+	<target name="deployCommon" depends="cleanTemp">
     	<copy todir="${build.temp}/classes" flatten="true" includeEmptyDirs="false">
     		<fileset dir="../source/common/classes">
-          <include name="**/*" />
-        </fileset>
+	          <include name="**/*" />
+	        </fileset>
     	</copy>
+  		<copy todir="${build.temp}/triggers" flatten="true" includeEmptyDirs="false">
+  			<fileset dir="../source/common/triggers">
+  				<include name="**/*" />
+			</fileset>
+  		</copy>
 
 		<ext:package packageFile="${build.temp}/package.xml" buildTemp="${build.temp}" apiVersion="${build.apiVersion}"/>
 
 		<deploy />
 
-  </target>
+	</target>
+	
+	<target name="deployObjects" depends="cleanTemp">
+		<copy todir="${build.temp}/objects" flatten="false" includeEmptyDirs="false">
+			<fileset dir="../source/common/objects">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		
+		<ext:package packageFile="${build.temp}/package.xml" buildTemp="${build.temp}" apiVersion="${build.apiVersion}"/>
+		<deploy />
+	</target>
   
   <macrodef name="deploy">
     <attribute name="deployUsername" default="${env.dev.username}"/>

@@ -2,9 +2,7 @@
 *	The Campaign Domain class which creates a domain model around sObject collections
 **/
 
-public with sharing class Campaigns extends fflib_SObjectDomain 
-	implements ICampaigns { //CampaignsService.ISupportCampaignDTO
-	
+public with sharing class Campaigns extends fflib_SObjectDomain implements ICampaigns, CampaignService.ISupportCampaignDTO {	
 	/*
 	* Parameters:
 	* 	List<Campaign> sObjectList - list of Campaigns
@@ -49,9 +47,22 @@ public with sharing class Campaigns extends fflib_SObjectDomain
 	/*
 	* ISupportCampaignDTO generate impl
 	*/
-	/*public void generate(CampaignDTOFactory campaignDTOFactory)	{
+	public void generate(CampaignService.CampaignDTOFactory campaignDTOFactory)	{
 		for(Campaign c : (List<Campaign>)this.Records){
 			campaignDTOFactory.add(c);
 		}
-	}*/
+	}
+	
+	/*******************
+	 * Trigger Overrides
+	*******************/
+	
+	/*
+	 * After Insert trigger method
+	*/
+	public override void onAfterInsert() {
+		if(this.Records.size() > 0) {
+			System.enqueueJob(new MongoService());
+		}
+	}
 }
