@@ -44,7 +44,7 @@
     <deploy />
   </target>
   
-	<target name="deployCommon" depends="cleanTemp">
+	<target name="deployClasses" depends="cleanTemp">
     	<copy todir="${build.temp}/classes" flatten="true" includeEmptyDirs="false">
     		<fileset dir="../source/common/classes">
 	          <include name="**/*" />
@@ -69,6 +69,26 @@
 			</fileset>
 		</copy>
 		
+		<ext:package packageFile="${build.temp}/package.xml" buildTemp="${build.temp}" apiVersion="${build.apiVersion}"/>
+		<deploy />
+	</target>
+	
+	<target name="deployAll" depends="cleanTemp">
+		<copy todir="${build.temp}/classes" flatten="true" includeEmptyDirs="false">
+    		<fileset dir="../source/common/classes">
+	          <include name="**/*" />
+	        </fileset>
+    	</copy>
+  		<copy todir="${build.temp}/triggers" flatten="true" includeEmptyDirs="false">
+  			<fileset dir="../source/common/triggers">
+  				<include name="**/*" />
+			</fileset>
+  		</copy>
+		<copy todir="${build.temp}/objects" flatten="false" includeEmptyDirs="false">
+			<fileset dir="../source/common/objects">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 		<ext:package packageFile="${build.temp}/package.xml" buildTemp="${build.temp}" apiVersion="${build.apiVersion}"/>
 		<deploy />
 	</target>
