@@ -7,5 +7,7 @@ public interface ICampaignsSelector extends fflib_ISObjectSelector {
 	List<Campaign> selectById(Set<Id> idSet);
 	
 	List<Campaign> selectTopLevelVolunteerCampaigns();
+	
+	List<Campaign> selectTopLevelVolunteerCampaignsForProcessing();
 
 }

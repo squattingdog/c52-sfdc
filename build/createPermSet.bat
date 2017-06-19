@@ -43,7 +43,7 @@ IF %FileName% == "" (
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
-SET SourceDir=%CD%\..\source\\%SourceFolderType%
+SET SourceDir=%CD%\..\source\%SourceFolderType%
 
 
 :CREATE_PERMISSION_SET

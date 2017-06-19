@@ -4,4 +4,6 @@
 */
 public interface ICampaignsService {
 	List<CampaignService.CampaignDTO> getTopLevelVolunteerCampaigns();
+	List<Campaign> getTopLevelVolunteerCampaignsForProcessing();
+	void setMongoIds(List<Campaign> updtCampaigns);
 }

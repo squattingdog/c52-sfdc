@@ -47,11 +47,12 @@ REM setup default values / basic error checking
 IF %ClassName%=="" GOTO CLASSNAME_NOT_SPECIFIED
 IF %TestClassSwitch%=="" SET TestClassSwitch=0
 IF NOT %FolderName%=="" SET FolderName=\%FolderName%
+IF NOT %SourceFolderType%=="" SET SourceFolderType=\\%SourceFolderType%
 IF %Version%=="" SET Version=37.0
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
-SET SourceDir=%CD%\..\source\\%SourceFolderType%
+SET SourceDir=%CD%\..\source%SourceFolderType%
 SET FileName=%ClassName%.cls
 SET MetaFileName=%FileName%-meta.xml
 SET TestFileName=%ClassName%Test.cls
@@ -65,13 +66,13 @@ IF %TestClassSwitch%==2 GOTO CREATE_TEST_CLASS
 IF %FolderName%=="" GOTO CREATE_CLASS
 
 REM check if directory exists
-IF NOT EXIST "%SourceDir%\Classes%FolderName%" GOTO DIRECTORY_DOES_NOT_EXIST
+IF NOT EXIST "%SourceDir%\classes%FolderName%" GOTO DIRECTORY_DOES_NOT_EXIST
 
 REM Check if file exists
 :CREATE_CLASS
-FOR %%a IN ("%SourceDir%\Classes%FolderName%\%FileName%") DO IF EXIST %%~sa GOTO CLASS_EXISTS
+FOR %%a IN ("%SourceDir%\classes%FolderName%\%FileName%") DO IF EXIST %%~sa GOTO CLASS_EXISTS
 
-CD "%SourceDir%\Classes%FolderName%"
+CD "%SourceDir%\classes%FolderName%"
 copy /y nul %FileName%
 
 (
@@ -92,7 +93,7 @@ copy /y nul %FileName%
 	echo }
 ) >%FileName%
 
-CALL :echoColor Cyan "Class file created: %SourceDir%\Classes%FolderName%\%FileName%"
+CALL :echoColor Cyan "Class file created: %SourceDir%\classes%FolderName%\%FileName%"
 ECHO.
 
 
@@ -101,7 +102,7 @@ REM Create Class Meta File
 REM *******************************************************************************************************************
 
 CALL :CREATE_META_FILE "%SourceDir%\classes\meta\%MetaFileName%"
-CALL :echoColor Cyan "Class meta file created: %SourceDir%\Classes\meta\%MetaFileName%"
+CALL :echoColor Cyan "Class meta file created: %SourceDir%\classes\meta\%MetaFileName%"
 ECHO.
 
 REM complete if not creating test class
@@ -122,7 +123,7 @@ IF %TestClassSwitch%==2 (
 REM Check if file exists
 FOR %%b IN ("%TestClassPathAndName%") DO IF EXIST %%~sb GOTO TEST_EXISTS
 
-CD "%SourceDir%\Classes\tests"
+CD "%SourceDir%\classes\tests"
 copy /y nul %TestFileName%
 
 (	
@@ -138,7 +139,7 @@ copy /y nul %TestFileName%
 	ECHO }
 ) >%TestFileName%
 
-CALL :echoColor Cyan "Test class file created: %SourceDir%\Classes\tests\%TestFileName%"
+CALL :echoColor Cyan "Test class file created: %SourceDir%\classes\tests\%TestFileName%"
 ECHO.
 
 
@@ -147,7 +148,7 @@ REM Create Test Class Meta File
 REM *******************************************************************************************************************
 
 CALL :CREATE_META_FILE "%SourceDir%\classes\tests\meta\%TestMetaFileName%"
-CALL :echoColor Cyan "Test class meta file created: %SourceDir%\Classes\tests\meta\%TestMetaFileName%"
+CALL :echoColor Cyan "Test class meta file created: %SourceDir%\classes\tests\meta\%TestMetaFileName%"
 ECHO.
 GOTO COMPLETE
 
@@ -158,14 +159,14 @@ REM Errors
 REM *******************************************************************************************************************
 :DIRECTORY_DOES_NOT_EXIST
 ECHO.
-CALL :echoColor white "the directory %SourceDir%\Classes%FolderName% does not exist."
+CALL :echoColor white "the directory %SourceDir%\classes%FolderName% does not exist."
 CALL :echoColor white "Would you like to create it [y or n]"
 SET /p CreateDir=": " %=%
 IF /I "%CreateDir%"=="y" GOTO CREATE_DIRECTORY
 GOTO END
 
 :CREATE_DIRECTORY
-MD "%SourceDir%\Classes%FolderName%"
+MD "%SourceDir%\classes%FolderName%"
 GOTO CREATE_CLASS
 
 :CLASSNAME_NOT_SPECIFIED
@@ -201,7 +202,7 @@ REM ****************************************************************************
 REM Check if file exists
 FOR %%b IN ("%1") DO IF EXIST %%~sb GOTO META_EXISTS
 
-CD "%SourceDir%\Classes\meta"
+CD "%SourceDir%\classes\meta"
 copy /y nul %1
 
 (

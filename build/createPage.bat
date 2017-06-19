@@ -49,7 +49,7 @@ IF %Version%=="" SET Version=31.0
 
 REM Get the path to the classes folder
 SET ExecutingDir="%CD%"
-SET SourceDir=%CD%\..\source\\%SourceFolderType%
+SET SourceDir=%CD%\..\source\%SourceFolderType%
 SET FileName=%PageName%.page
 SET MetaFileName=%FileName%-meta.xml
 

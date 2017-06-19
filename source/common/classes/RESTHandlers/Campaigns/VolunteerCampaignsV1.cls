@@ -3,15 +3,14 @@
 */
 @RestResource(urlMapping='/v1/volunteerCampaigns/')
 global with sharing class VolunteerCampaignsV1 {
-	/*
-    * 
+	/* 
     * Returns:
-    *     List<CampaignDTO>: The results of the selector
+    *     APIResponse: The results of the selector
     *
-    * Description: gets the top level Volunteer Campaigns
+    * Description: allows a user to signup for a particular volunteer job shift.
     */
-	@HttpGet
-    global static List<CampaignService.CampaignDTO> getVolunteerCampaigns() {
-		return CampaignService.getInstance().getTopLevelVolunteerCampaigns();
+	@HttpPost
+	global static APIResponse signupForCampaignJobShift(APIJobSignup signup) {
+		return new APIResponse();
 	}
 }
