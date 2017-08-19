@@ -10,11 +10,23 @@ public with sharing class Settings {
 		return mongoSettings == null ? null : mongoSettings.Database__c;
 	}
 	
+	/*
+	 * Description:
+	 *	Gets the mongo token type
+	 * Returns:
+	 *	String - the token type
+	*/
 	public static String getMongoTokenType() {
 		C52_MongoSettings__c mongoSettings = Settings.getMongoSettingsValues();
 		return mongoSettings == null ? null : mongoSettings.TokenType__c;
 	}
 	
+	/*
+	 * Description:
+	 *	Gets the mongo token
+	 * Returns:
+	 *	String - the mongo token
+	*/
 	public static String getMongoToken() {
 		C52_MongoSettings__c mongoSettings = Settings.getMongoSettingsValues();
 		return mongoSettings == null ? null : mongoSettings.Token__c;

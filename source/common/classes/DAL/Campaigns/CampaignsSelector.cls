@@ -1,4 +1,4 @@
-public Class CampaignsSelector  extends fflib_SObjectSelector implements ICampaignsSelector {
+public Class CampaignsSelector  extends fflib_SObjectSelector {
 
 	/*
 	* Output:
@@ -7,8 +7,8 @@ public Class CampaignsSelector  extends fflib_SObjectSelector implements ICampai
 	* 	This method returns an instance of CampaignsSelector cast as the 
 	*   interface ICampaignsSelector
 	*/
-	public Static ICampaignsSelector newInstance() {
-		Return (ICampaignsSelector)App.Selector.newInstance(Campaign.SObjectType);
+	public Static CampaignsSelector newInstance() {
+		Return (CampaignsSelector)App.Selector.newInstance(Campaign.SObjectType);
 	}
 
 	/*
@@ -67,7 +67,9 @@ public Class CampaignsSelector  extends fflib_SObjectSelector implements ICampai
 	public List<Campaign> selectTopLevelVolunteerCampaigns() {
         return (List<Campaign>)Database.query(
 			newQueryFactory().
-			setCondition('RecordType.Name = \'Volunteer Campaign\' AND Parent.ID = null AND IncludeForWebMobile__c = true')
+			setCondition('RecordType.Name = \'' 
+				+ Constants.RECORD_TYPE_VOLUNTEER_CAMPAIGN 
+				+ '\' AND Parent.ID = null AND IncludeForWebMobile__c = true')
 			.toSoql());
 	}
 	
@@ -82,7 +84,9 @@ public Class CampaignsSelector  extends fflib_SObjectSelector implements ICampai
 	public List<Campaign> selectTopLevelVolunteerCampaignsForProcessing() {
         return (List<Campaign>)Database.query(
 			newQueryFactory().
-			setCondition('RecordType.Name = \'Volunteer Campaign\' AND Parent.ID = null AND IncludeForWebMobile__c = true AND Processed__c = false')
+			setCondition('RecordType.Name = \''
+				+ Constants.RECORD_TYPE_VOLUNTEER_CAMPAIGN
+				+ '\' AND Parent.ID = null AND IncludeForWebMobile__c = true AND Processed__c = false')
 			.toSoql());
 	}
 }

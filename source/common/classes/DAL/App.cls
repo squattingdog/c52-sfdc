@@ -17,7 +17,9 @@ public class App {
 	public static final fflib_Application.SelectorFactory Selector =
 		New fflib_Application.SelectorFactory(
 						New Map<SObjectType, Type>{
-							Campaign.SObjectType => CampaignsSelector.class});
+							Campaign.SObjectType => CampaignsSelector.class
+							,GW_Volunteers__Volunteer_Job__c.SObjectType => VolunteerJobsSelector.class
+						});
 
 
 	// Configure And create the DomainFactory for this application
