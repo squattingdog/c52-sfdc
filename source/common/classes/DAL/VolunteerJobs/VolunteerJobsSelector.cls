@@ -1,13 +1,21 @@
-public class VolunteerJobsSelector extends fflib_SObjectSelector implements IVolunteerJobsSelector{
+public class VolunteerJobsSelector extends fflib_SObjectSelector {
 	/*
 	* Output:
-	* 	ICampaignsSelector - instance of ICampaignsSelector
+	* 	VolunteerJobsSelector
 	* Description:
-	* 	This method returns an instance of CampaignsSelector cast as the 
-	*   interface ICampaignsSelector
+	* 	This method returns an instance of VolunteerJobsSelector 
 	*/
-	public Static ICampaignsSelector newInstance() {
-		Return (ICampaignsSelector)App.Selector.newInstance(Campaign.SObjectType);
+	public Static VolunteerJobsSelector newInstance() {
+		Return (VolunteerJobsSelector)App.Selector.newInstance(GW_Volunteers__Volunteer_Job__c.SObjectType);
+	}
+	
+	/*
+	* constructor
+	*
+	* sets field permission validation to false
+	*/
+	public VolunteerJobsSelector() {
+		super(false);
 	}
 	
 	/*
@@ -80,7 +88,7 @@ public class VolunteerJobsSelector extends fflib_SObjectSelector implements IVol
 	public List<GW_Volunteers__Volunteer_Job__c> selectByCampaignId(Set<Id> campaignIdSet) {
 		return (List<GW_Volunteers__Volunteer_Job__c>)Database.query(
 			newQueryFactory().
-			setCondition('GW_Volunteers__VolunteerJob__c.GW_Volunteers__Campaign__c = :campaignIdSet')
+			setCondition('GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Campaign__c IN :campaignIdSet')
 			.toSoql()); 
 	}
 }
