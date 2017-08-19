@@ -77,7 +77,7 @@ global With sharing class CampaignService {
 	* Description:
 	* 	This method provides access to CampaignsSelector class defined in the app
 	*/
-	private ICampaignsSelector selector() {
+	private CampaignsSelector selector() {
 		return CampaignsSelector.newInstance();
 	}
 	

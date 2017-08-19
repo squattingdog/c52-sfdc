@@ -14,6 +14,14 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	public static ICampaigns newInstance(List<Campaign> sObjectList) {
 		Return (ICampaigns)App.Domain.newInstance(sObjectList);
 	}
+	
+	/*
+	* Property used to toggle the triggered http data sync
+	*/
+	public static Boolean syncEnabled = true;
+	public static void setSyncRecordsEnabled(Boolean val) {
+		syncEnabled = val;
+	}
 
 	/*
 	* Constructor
@@ -61,7 +69,8 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	 * After Insert trigger method
 	*/
 	public override void onAfterInsert() {
-		if(this.Records.size() > 0) {
+		//push data to mongoDB
+		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
 			System.enqueueJob(new MongoService());
 		}
 	}
