@@ -4,7 +4,7 @@
 global With sharing class CampaignService {	
 
 	private static CampaignService instance;
-	private static boolean allowConstruct = False;
+	private static Boolean allowConstruct = false;
 
 	// throws error if attempted to access instance through constructor
 	global CampaignService(){
@@ -27,9 +27,8 @@ global With sharing class CampaignService {
         return instance;
     }
 	/*
-	* Output: CampaignService -instance of the class 
-	* Description: This method allows the Object To be accessed from 
-	* 	a static context, And allows instance methods to be called on it
+	* Description:
+	*	Allows a mock instance to be set by unit tests.
 	*/
 	@TestVisible
 	private static void setMock(CampaignService i){
@@ -68,7 +67,7 @@ global With sharing class CampaignService {
 	* 	This method provides access to CampaignsServiceImpl class defined in the app
 	*/
 	private ICampaignsService service() {
-		return (ICampaignsService) App.Service.newInstance(ICampaignsService.Class);
+		return (ICampaignsService)App.Service.newInstance(ICampaignsService.Class);
 	}
 
     /*
@@ -100,22 +99,22 @@ global With sharing class CampaignService {
 		public List<CampaignDTO> campaignDTOs {get; private set;}
 		
 		public CampaignDTOFactory(){
-			this.CampaignDTOs = new List<CampaignDTO>();
+			this.campaignDTOs = new List<CampaignDTO>();
 		}
 		
 		/*
 		* Converts a campaign object to a campaignDTO and adds to the list
 		*/
 		public void add(Campaign c){
-			this.CampaignDTOs.add(new CampaignDTO(c));
+			this.campaignDTOs.add(new CampaignDTO(c));
 		}
 	}
 	
 	global class CampaignDTO {
-		public string name;
-		public string campaignId;
-		public string description;
-		public string logoUrl;
+		public String name;
+		public String campaignId;
+		public String description;
+		public String logoUrl;
 		
 		public CampaignDTO(Campaign c) {
 			this.name = c.name;

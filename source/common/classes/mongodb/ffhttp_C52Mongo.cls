@@ -4,7 +4,7 @@
  * The main C52 Mongo client class.
  * This class contains the methods to access each of the C52 Mongo API calls.
  */
-public with sharing class ffhttp_C52Mongo extends ffhttp_Client.AbstractClient {
+public class ffhttp_C52Mongo extends ffhttp_Client.AbstractClient {
 
 	/**
 	* Constructor.

@@ -45,7 +45,8 @@ public class VolunteerJobsSelector extends fflib_SObjectSelector {
 			GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Number_of_Volunteers__c,
 			GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Ongoing__c,
 			GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Skills_Needed__c,
-			GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Volunteer_Website_Time_Zone__c
+			GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Volunteer_Website_Time_Zone__c,
+			GW_Volunteers__Volunteer_Job__c.MongoId__c
         };
 	}
 

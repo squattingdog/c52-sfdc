@@ -3,7 +3,7 @@
  *
  * This class contains the methods to access each of the C52 Mongo Campaigns API calls.
  */
-public with sharing class ffhttp_C52MongoCampaigns extends ffhttp_C52MongoResource {
+public class ffhttp_C52MongoCampaigns extends ffhttp_C52MongoResource {
 	/**
 	 * Constructor
 	 *
@@ -21,10 +21,10 @@ public with sharing class ffhttp_C52MongoCampaigns extends ffhttp_C52MongoResour
 	 * Insert Campaigns using post semantics. 
 	 *
 	 */
-	 public CampaignsPostRequest campaignsPostRequest(Blob campaignsJsonContent){
-	 	//if(campaignsJsonContent == null) throw new ffhttp_SystemException(System.Label.ffhttp_c52Mongo_NullContent);
+	 public CampaignsPostRequest getCampaignsPostRequest(Blob campaignsJsonContent){
+	 	if(campaignsJsonContent == null) throw new ffhttp_SystemException(Constants.CALLOUT_CONTENT_NULL);
 	 	
-	 	ffhttp_BlobContent content = new ffhttp_BlobContent(campaignsJsonContent, 'application/json');
+	 	ffhttp_BlobContent content = new ffhttp_BlobContent(campaignsJsonContent, Constants.CONTENT_TYPE_JSON);
 	 	return new CampaignsPostRequest(this, content);
 	 }
 	 
@@ -34,11 +34,11 @@ public with sharing class ffhttp_C52MongoCampaigns extends ffhttp_C52MongoResour
 	 * Update a Campaign using put semantics. 
 	 *
 	 */
-	 public CampaignsPutRequest campaignsPutRequest(string path, Blob campaignsJsonContent){
-	 	//if(path == null) throw new ffhttp_SystemException(System.Label.ffhttp_c52Mongo_NullPath);
-	 	//if(campaignsJsonContent == null) throw new ffhttp_SystemException(System.Label.ffhttp_c52Mongo_NullContent);
+	 public CampaignsPutRequest getCampaignsPutRequest(string path, Blob campaignsJsonContent){
+	 	if(String.isBlank(path)) throw new ffhttp_SystemException(Constants.CALLOUT_PATH_NULL);
+	 	if(campaignsJsonContent == null) throw new ffhttp_SystemException(Constants.CALLOUT_CONTENT_NULL);
 	 	
-	 	ffhttp_BlobContent content = new ffhttp_BlobContent(campaignsJsonContent, 'application/json');
+	 	ffhttp_BlobContent content = new ffhttp_BlobContent(campaignsJsonContent, Constants.CONTENT_TYPE_JSON);
 	 	return new CampaignsPutRequest(this, path, content);
 	 }
 	 
@@ -49,20 +49,20 @@ public with sharing class ffhttp_C52MongoCampaigns extends ffhttp_C52MongoResour
 	 public class CampaignsPostRequest extends C52MongoRequest {
 	 	CampaignsPostRequest(ffhttp_C52MongoCampaigns campaigns, ffhttp_IHttpContent content) {
 	 		super(campaigns
-	 			,C52MONGO_URL + C52MONGO_DB + '/campaign/'
+	 			,C52MONGO_URL + C52MONGO_DB + MONGO_CAMPAIGNS
 	 			,REQUEST_METHOD_POST
 	 			,content
-	 			,new ffhttp_JsonDeserializer(C52MongoModelCampaign.class));	 	
+	 			,new ffhttp_JsonDeserializer(MongoCampaign.class));	 	
 	 	}
 	 }
 	 
 	 public class CampaignsPutRequest extends C52MongoRequest {
 	 	CampaignsPutRequest(ffhttp_C52MongoCampaigns campaigns, string path, ffhttp_IHttpContent content) {
 	 		super(campaigns
-	 			,C52MONGO_URL + C52MONGO_DB + '/campaign/' + path
+	 			,C52MONGO_URL + C52MONGO_DB + MONGO_CAMPAIGNS + path
 	 			,REQUEST_METHOD_POST
 	 			,content
-	 			,new ffhttp_JsonDeserializer(C52MongoModelCampaign.class)); 	
+	 			,new ffhttp_JsonDeserializer(MongoCampaign.class)); 	
 	 	}
 	 }
 }
