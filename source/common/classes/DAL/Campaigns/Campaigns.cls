@@ -22,14 +22,6 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	public static void setSyncRecordsEnabled(Boolean val) {
 		syncEnabled = val;
 	}
-	
-	/*
-	* Property used to toggle the trigger events
-	*/
-	private static Boolean triggerEventsEnabled = true;
-	public static void disableTriggerEvents() {
-		triggerEventsEnabled = false;
-	}
 
 	/*
 	* Constructor
@@ -76,11 +68,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	/*
 	 * After Insert trigger method
 	*/
-	public override void onAfterInsert() {
-		// check for disabled trigger
-		if(!Campaigns.triggerEventsEnabled)
-			return;
-		
+	public override void onAfterInsert() {		
 		//push data to mongoDB
 		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
 			System.enqueueJob(new CampaignsQueable());
@@ -90,11 +78,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	/*
 	* Before update trigger event
 	*/
-	public override void onBeforeUpdate(Map<Id,SObject> existingRecords) {
-		//check for disabled trigger
-		if(!Campaigns.triggerEventsEnabled)
-			return;
-		
+	public override void onBeforeUpdate(Map<Id,SObject> existingRecords) {		
 		//set processed flag to false so the record is picked up in sync process.
 		for(Campaign c : (List<Campaign>)this.Records) {
 			c.processed__c = false;

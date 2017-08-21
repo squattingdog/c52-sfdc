@@ -31,7 +31,7 @@ public class ffhttp_C52Mongo extends ffhttp_Client.AbstractClient {
 	 *
 	 * @return The resources collection.
 	 */
-	public ffhttp_C52MongoJobs jobs()
+	public ffhttp_C52MongoJobs volunteerJobs()
 	{
 		return new ffhttp_C52MongoJobs(this);
 	}

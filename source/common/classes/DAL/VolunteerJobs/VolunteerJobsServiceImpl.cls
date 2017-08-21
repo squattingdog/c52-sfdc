@@ -1,4 +1,4 @@
-public with sharing class VolunteerJobsServiceImpl {
+public with sharing class VolunteerJobsServiceImpl implements IVolunteerJobsService {
 	
 	/*
 	* Description
@@ -18,12 +18,17 @@ public with sharing class VolunteerJobsServiceImpl {
 	
 	/*
 	* Description:
-	*	Update the campaign with the related mongoId and set processed to true.
+	*	Update the VolunteerJobs setting the processed flag to true.
 	* 
 	* Inputs:
-	*	idMap - map of CampaignId to mongoId
+	*	updtVolunteerJobs - list of volunteerjobs with mongoId already set.
 	*/
-	void setMongoIds(List<GW_Volunteers__Volunteer_Job__c> updtVolunteerJobs){
+	public void setMongoIds(List<GW_Volunteers__Volunteer_Job__c> updtVolunteerJobs){
+		// disable update trigger events on volunteerJobs domain
+		fflib_SObjectDomain.getTriggerEvent(VolunteerJobs.class).disableBeforeUpdate();		
+		fflib_SObjectDomain.getTriggerEvent(VolunteerJobs.class).disableAfterUpdate();
+		
+		// update mongoId and processed flag.
 		fflib_ISobjectUnitOfWork uow = App.UnitOfWork.newInstance();
 		for(GW_Volunteers__Volunteer_Job__c job : updtVolunteerJobs) {
 			job.processed__c = true;

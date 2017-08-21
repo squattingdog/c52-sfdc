@@ -11,16 +11,16 @@ public class ffhttp_C52MongoJobs extends ffhttp_C52MongoResource {
 	}
 	
 	/**
-	 * /Campaigns_post
+	 * /volunteerJobs_post
 	 *
 	 * Insert Jobs using post semantics. 
 	 *
 	 */
-	 public JobsPostRequest campaignsPostRequest(Blob jobsJsonContent){
+	 public VolunteerJobsPostRequest getVolunteerJobsPostRequest(Blob jobsJsonContent){
 	 	if(jobsJsonContent == null) throw new ffhttp_SystemException(Constants.CALLOUT_CONTENT_NULL);
 	 	
 	 	ffhttp_BlobContent content = new ffhttp_BlobContent(jobsJsonContent, 'application/json');
-	 	return new JobsPostRequest(this, content);
+	 	return new VolunteerJobsPostRequest(this, content);
 	 }
 	 
 	 
@@ -28,14 +28,16 @@ public class ffhttp_C52MongoJobs extends ffhttp_C52MongoResource {
 	 /*********************************************************************************************************
 	 * API Callout Inner Classes
 	 *********************************************************************************************************/
-	 
-	 public class JobsPostRequest extends C52MongoRequest {
-	 	JobsPostRequest(ffhttp_C52MongoJobs jobs, ffhttp_IHttpContent content) {
+	 /*
+	 * Get a VolunteerJobsPostRequest object used to call execute()
+	 */
+	 public class VolunteerJobsPostRequest extends C52MongoRequest {
+	 	VolunteerJobsPostRequest(ffhttp_C52MongoJobs jobs, ffhttp_IHttpContent content) {
 	 		super(jobs
 	 			,C52MONGO_URL + C52MONGO_DB + MONGO_JOBS
 	 			,REQUEST_METHOD_POST
 	 			,content
-	 			,new ffhttp_JsonDeserializer(MongoCampaign.class));	 	
+	 			,new ffhttp_JsonDeserializer(MongoJob.class));	 	
 	 	}
 	 }
 	 
@@ -45,7 +47,7 @@ public class ffhttp_C52MongoJobs extends ffhttp_C52MongoResource {
 	 			,C52MONGO_URL + C52MONGO_DB + MONGO_JOBS + path
 	 			,REQUEST_METHOD_POST
 	 			,content
-	 			,new ffhttp_JsonDeserializer(MongoCampaign.class)); 	
+	 			,new ffhttp_JsonDeserializer(MongoJob.class)); 	
 	 	}
 	 }
 }

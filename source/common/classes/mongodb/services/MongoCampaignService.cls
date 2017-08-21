@@ -40,7 +40,8 @@ public class MongoCampaignService extends MongoServiceBase {
 		// get the Campaigns Resource
 		ffhttp_C52MongoCampaigns mongoCampaigns = mongoClient.campaigns();
 		// setup the request object
-		ffhttp_C52MongoCampaigns.CampaignsPostRequest request = mongoCampaigns.getCampaignsPostRequest(Blob.valueOf(JSON.serialize(campDTOs)));
+		ffhttp_C52MongoCampaigns.CampaignsPostRequest request = 
+			mongoCampaigns.getCampaignsPostRequest(Blob.valueOf(JSON.serialize(campDTOs)));
 		// send the request and capture the response
 		MongoCampaign responseCampaigns = (MongoCampaign)request.execute();
 		

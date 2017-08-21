@@ -92,4 +92,18 @@ public class VolunteerJobsSelector extends fflib_SObjectSelector {
 			setCondition('GW_Volunteers__Volunteer_Job__c.GW_Volunteers__Campaign__c IN :campaignIdSet')
 			.toSoql()); 
 	}
+	
+	/*
+	* Returns:
+	*	List<GW_Volunteers__Volunteer_Job__c> - List of VolunteerJobs for processing
+	* Description:
+	*	Selects all GW_Volunteers__Volunteer_Job__c records where processing is false
+	*		and includeForWebsite = true
+	*/
+	public List<GW_Volunteers__Volunteer_Job__c> selectJobsForProcessing() {
+		return (List<GW_Volunteers__Volunteer_Job__c>)Database.query(
+			newQueryFactory().
+			setCondition('processed__c = false AND GW_Volunteers__Display_on_Website__c = true')
+			.toSoql());
+	}
 }
