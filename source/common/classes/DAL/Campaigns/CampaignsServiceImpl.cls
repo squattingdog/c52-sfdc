@@ -31,15 +31,20 @@ public class CampaignsServiceImpl implements ICampaignsService {
 	
 	/*
 	* Description:
-	*	Update the campaign with the related mongoId
+	*	Update the campaigns setting the processed flag to true.
 	* 
 	* Inputs:
-	*	idMap - map of CampaignId to mongoId
+	*	updtCampaigns - list of compaigns with mongoId already set.
 	*/
 	public void setMongoIds(List<Campaign> updtCampaigns) {
+		// disable trigger to prevent processed__c being set to false.
+		fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableBeforeUpdate();
+		
+		// update objects - mongoId and processed flag
 		fflib_ISobjectUnitOfWork uow = App.UnitOfWork.newInstance();
 		for(Campaign c : updtCampaigns) {
-			c.Processed__c = true;
+			c.processed__c = true;
+			system.debug('Campaign: ' + c);
 			uow.registerDirty(c);
 		}
 		

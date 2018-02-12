@@ -7,4 +7,15 @@ public class Constants {
 	
 	//Common Object Fields
 	public static final String MONGO_ID_FIELD_NAME = 'MongoId__c';
+	
+	//API
+	public static final String CONTENT_TYPE_JSON = 'application/json';
+	
+	//Mongo API
+	public static final String MONGO_RESPONSE_SUCCESS_STATUS = 'OK';
+	
+	//exception messages
+	public static final String CALLOUT_CONTENT_NULL = 'The content cannot be null or empty';
+	public static final String CALLOUT_PATH_NULL = 'The path parameter cannot be null or empty';
+	
 }

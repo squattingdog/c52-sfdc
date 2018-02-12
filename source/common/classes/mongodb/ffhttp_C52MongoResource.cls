@@ -6,8 +6,9 @@ public with sharing abstract class ffhttp_C52MongoResource {
 	public static final String C52MONGO_URL = 'https://c52-sfdc-dev.herokuapp.com/';
 	public static final String C52MONGO_DB = Settings.getMongoDBName();
 	
-	//Mongo Collections
-	public static final String MongoCampaigns = 'campaign';
+	//Mongo Routes / Collections
+	public static final String MONGO_CAMPAIGNS = '/campaign/';
+	public static final String MONGO_JOBS = '/job/';
 	
 
 	//Instance variables

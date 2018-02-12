@@ -18,7 +18,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	/*
 	* Property used to toggle the triggered http data sync
 	*/
-	public static Boolean syncEnabled = true;
+	private static Boolean syncEnabled = true;
 	public static void setSyncRecordsEnabled(Boolean val) {
 		syncEnabled = val;
 	}
@@ -30,7 +30,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	* Description:
 	* 	Domain classes are initialized with lists to enforce bulkification throughout
 	*/
-	public Campaigns(List < Campaign > sObjectList) {
+	public Campaigns(List<Campaign> sObjectList) {
 		super(sObjectList);
 	}
 
@@ -68,10 +68,20 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	/*
 	 * After Insert trigger method
 	*/
-	public override void onAfterInsert() {
+	public override void onAfterInsert() {		
 		//push data to mongoDB
 		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
-			System.enqueueJob(new MongoService());
+			System.enqueueJob(new CampaignsQueable());
+		}
+	}
+	
+	/*
+	* Before update trigger event
+	*/
+	public override void onBeforeUpdate(Map<Id,SObject> existingRecords) {		
+		//set processed flag to false so the record is picked up in sync process.
+		for(Campaign c : (List<Campaign>)this.Records) {
+			c.processed__c = false;
 		}
 	}
 }

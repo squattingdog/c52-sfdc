@@ -1,5 +1,5 @@
 @isTest
-public class C52MongoModelCampaignTest {
+public class MongoJobServiceTest {
 	static testMethod void Test() {
 
 		Test.startTest();

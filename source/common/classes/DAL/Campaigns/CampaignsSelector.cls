@@ -25,7 +25,8 @@ public Class CampaignsSelector  extends fflib_SObjectSelector {
             Campaign.LogoUrl__c,
             Campaign.Parent.Id,
 			Campaign.IncludeForWebMobile__c,
-			Campaign.Processed__c
+			Campaign.Processed__c,
+			Campaign.MongoId__c
         };
 	}
 

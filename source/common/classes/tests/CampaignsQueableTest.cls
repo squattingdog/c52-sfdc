@@ -1,5 +1,5 @@
 @isTest
-public class MongoServiceTest {
+public class CampaignsQueableTest {
 	static testMethod void Test() {
 
 		Test.startTest();

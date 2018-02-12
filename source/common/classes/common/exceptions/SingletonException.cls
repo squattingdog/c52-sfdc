@@ -1,4 +1,8 @@
 public class SingletonException extends Exception {
+    private Type theType;
+    public SingletonException(Type t) {
+    	this.theType = t;
+    }
     
     /*
     * Ouput: 
@@ -8,7 +12,7 @@ public class SingletonException extends Exception {
     */
     override
     public string getMessage(){
-        return 'Singleton pattern exception.  Instances of a singleton class ' +
+        return this.theType.toString() + ' :: Singleton pattern exception.  Instances of a singleton class ' +
             'must be accessed through the static getInstance() method';
     }
         
