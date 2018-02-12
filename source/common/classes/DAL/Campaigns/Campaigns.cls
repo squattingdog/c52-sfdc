@@ -68,7 +68,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	/*
 	 * After Insert trigger method
 	*/
-	public override void onAfterInsert() {		
+	public override void onAfterInsert() {
 		//push data to mongoDB
 		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
 			System.enqueueJob(new CampaignsQueable());

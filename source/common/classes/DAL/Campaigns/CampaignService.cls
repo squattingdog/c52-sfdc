@@ -26,6 +26,7 @@ global With sharing class CampaignService {
         }             
         return instance;
     }
+    
 	/*
 	* Description:
 	*	Allows a mock instance to be set by unit tests.
