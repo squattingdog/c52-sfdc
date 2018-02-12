@@ -1,12 +1,48 @@
 public with sharing class Settings {
+	private static Settings instance;
+	private static Boolean allowConstruct = false;
+	
+	/*
+	 * Constructor
+	*/
+	public Settings(){
+		if(!allowConstruct)
+			throw new SingletonException(Settings.class);
+	}
+	
+	/*
+	 * Description:
+	 *	static accessor of the settings
+	 * Returns:
+	 *	Settings instance
+	*/
+	public static Settings getInstance() {
+		if(instance == null) {
+			allowConstruct = true;
+			instance = new Settings();
+			allowConstruct = false;
+		}
+		
+		return instance;
+	}
+	
+	/*
+	* Description:
+	*	Allows a mock instance to be set by unit tests.
+	*/
+	@TestVisible
+	private static void setMock(Settings i){
+		instance = i;
+	}
+	
 	/*
 	 * Description:
 	 *	Gets the monogo Database name
 	 * Returns:
 	 *	String - the database name
 	*/
-	public static String getMongoDBName() {
-		C52_MongoSettings__c mongoSettings = Settings.getMongoSettingsValues();
+	public String getMongoDBName() {
+		C52_MongoSettings__c mongoSettings = this.getMongoSettingsValues();
 		return mongoSettings == null ? null : mongoSettings.Database__c;
 	}
 	
@@ -16,8 +52,8 @@ public with sharing class Settings {
 	 * Returns:
 	 *	String - the token type
 	*/
-	public static String getMongoTokenType() {
-		C52_MongoSettings__c mongoSettings = Settings.getMongoSettingsValues();
+	public String getMongoTokenType() {
+		C52_MongoSettings__c mongoSettings = this.getMongoSettingsValues();
 		return mongoSettings == null ? null : mongoSettings.TokenType__c;
 	}
 	
@@ -27,8 +63,8 @@ public with sharing class Settings {
 	 * Returns:
 	 *	String - the mongo token
 	*/
-	public static String getMongoToken() {
-		C52_MongoSettings__c mongoSettings = Settings.getMongoSettingsValues();
+	public String getMongoToken() {
+		C52_MongoSettings__c mongoSettings = this.getMongoSettingsValues();
 		return mongoSettings == null ? null : mongoSettings.Token__c;
 	}
 	
@@ -38,7 +74,7 @@ public with sharing class Settings {
 	 * Returns:
 	 *	C52_MongoSettings__c - the settings record.
 	*/
-	private static C52_MongoSettings__c getMongoSettingsValues() {
+	private C52_MongoSettings__c getMongoSettingsValues() {
 		return C52_MongoSettings__c.GetValues(Constants.MONGO_SETTINGS_NAME);
 	}
 }
