@@ -2,9 +2,7 @@
 *	The Campaign Domain class which creates a domain model around sObject collections
 **/
 
-public with sharing class Campaigns extends fflib_SObjectDomain 
-	implements ICampaigns { //CampaignsService.ISupportCampaignDTO
-	
+public with sharing class Campaigns extends fflib_SObjectDomain implements ICampaigns, CampaignService.ISupportCampaignDTO {	
 	/*
 	* Parameters:
 	* 	List<Campaign> sObjectList - list of Campaigns
@@ -16,6 +14,14 @@ public with sharing class Campaigns extends fflib_SObjectDomain
 	public static ICampaigns newInstance(List<Campaign> sObjectList) {
 		Return (ICampaigns)App.Domain.newInstance(sObjectList);
 	}
+	
+	/*
+	* Property used to toggle the triggered http data sync
+	*/
+	private static Boolean syncEnabled = true;
+	public static void setSyncRecordsEnabled(Boolean val) {
+		syncEnabled = val;
+	}
 
 	/*
 	* Constructor
@@ -24,7 +30,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain
 	* Description:
 	* 	Domain classes are initialized with lists to enforce bulkification throughout
 	*/
-	public Campaigns(List < Campaign > sObjectList) {
+	public Campaigns(List<Campaign> sObjectList) {
 		super(sObjectList);
 	}
 
@@ -49,9 +55,33 @@ public with sharing class Campaigns extends fflib_SObjectDomain
 	/*
 	* ISupportCampaignDTO generate impl
 	*/
-	/*public void generate(CampaignDTOFactory campaignDTOFactory)	{
+	public void generate(CampaignService.CampaignDTOFactory campaignDTOFactory)	{
 		for(Campaign c : (List<Campaign>)this.Records){
 			campaignDTOFactory.add(c);
 		}
-	}*/
+	}
+	
+	/*******************
+	 * Trigger Overrides
+	*******************/
+	
+	/*
+	 * After Insert trigger method
+	*/
+	public override void onAfterInsert() {		
+		//push data to mongoDB
+		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
+			System.enqueueJob(new CampaignsQueable());
+		}
+	}
+	
+	/*
+	* Before update trigger event
+	*/
+	public override void onBeforeUpdate(Map<Id,SObject> existingRecords) {		
+		//set processed flag to false so the record is picked up in sync process.
+		for(Campaign c : (List<Campaign>)this.Records) {
+			c.processed__c = false;
+		}
+	}
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>C52 Mongo Settings</description>
+    <enableFeeds>false</enableFeeds>
+
+	<fields>
+        <fullName>Database__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <defaultValue>&quot;heroku_w830mlvd&quot;</defaultValue>
+        <description>the database name</description>
+        <externalId>false</externalId>
+        <label>Mongodb Name</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>TokenType__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <defaultValue>&quot;bearer&quot;</defaultValue>
+        <description>the token type</description>
+        <externalId>false</externalId>
+        <label>Token Type</label>
+        <length>16</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Token__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>the auth token</description>
+        <externalId>false</externalId>
+        <label>Auth Token</label>
+        <length>128</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <label>C52 Mongo Settings</label>
+</CustomObject>

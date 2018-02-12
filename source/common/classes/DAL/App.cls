@@ -3,21 +3,27 @@ public class App {
 	public static final fflib_Application.UnitOfWorkFactory UnitOfWork = 
 		New fflib_Application.UnitOfWorkFactory(
 						New List<SObjectType>{
-							Campaign.SObjectType});
+							Campaign.SObjectType
+							,GW_Volunteers__Volunteer_Job__c.SObjectType
+						});
 	
 	
 	// Configure And create the ServiceFactory for this application
 	public static final fflib_Application.ServiceFactory Service =
 		New fflib_Application.ServiceFactory(
 						New Map<Type, Type>{
-						ICampaignsService.class => CampaignsServiceImpl.class});
+							ICampaignsService.class => CampaignsServiceImpl.class
+							,IVolunteerJobsService.class => VolunteerJobsServiceImpl.class
+						});
 	
 	
 	// Configure And create the SelectorFactory for this application
 	public static final fflib_Application.SelectorFactory Selector =
 		New fflib_Application.SelectorFactory(
 						New Map<SObjectType, Type>{
-							Campaign.SObjectType => CampaignsSelector.class});
+							Campaign.SObjectType => CampaignsSelector.class
+							,GW_Volunteers__Volunteer_Job__c.SObjectType => VolunteerJobsSelector.class
+						});
 
 
 	// Configure And create the DomainFactory for this application
@@ -25,5 +31,7 @@ public class App {
 		New fflib_Application.DomainFactory(
 			App.Selector,
 			New Map<SObjectType, Type>{
-				Campaign.SObjectType => Campaigns.Constructor.class});
+				Campaign.SObjectType => Campaigns.Constructor.class
+				,GW_Volunteers__Volunteer_Job__c.SObjectType => VolunteerJobs.Constructor.class
+			});
 }

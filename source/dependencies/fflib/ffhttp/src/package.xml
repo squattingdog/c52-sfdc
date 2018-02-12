@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ffhttp-core</fullName>
+    <types>
+        <members>ffhttp_AbstractJsonSerializable</members>
+        <members>ffhttp_AppException</members>
+        <members>ffhttp_BlobContent</members>
+        <members>ffhttp_Client</members>
+        <members>ffhttp_ClientTest</members>
+        <members>ffhttp_IConnectorType</members>
+        <members>ffhttp_IDeserialize</members>
+        <members>ffhttp_IHttpContent</members>
+        <members>ffhttp_ISerialize</members>
+        <members>ffhttp_JsonDeserializer</members>
+        <members>ffhttp_MultipartMimeAttachment</members>
+        <members>ffhttp_OAuthClient</members>
+        <members>ffhttp_SystemException</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ffhttp_AbstractClientCredentialsNotSet</members>
+        <members>ffhttp_AbstractClientNotSet</members>
+        <members>ffhttp_NullAccessToken</members>
+        <members>ffhttp_NullBlob</members>
+        <members>ffhttp_NullContentType</members>
+        <members>ffhttp_NullTokenType</members>
+        <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>CustomLabels</members>
+        <name>CustomLabels</name>
+    </types>
+    <version>33.0</version>
+</Package>
