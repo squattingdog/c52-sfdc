@@ -65,7 +65,7 @@ public class VolunteerJobs extends fflib_SObjectDomain implements IVolunteerJobs
 	/*
 	 * After Insert trigger method
 	*/
-	public override void onAfterInsert() {		
+	public override void onAfterInsert() {	
 		//push data to mongoDB
 		if(this.Records.size() > 0 && VolunteerJobs.syncEnabled) {
 			System.enqueueJob(new JobsQueable());

@@ -1,10 +1,25 @@
 public class MongoJobService extends MongoServiceBase {
+	private static Boolean isEnabled = true;
+	
+	/*
+	* Description: 
+	*	override superclass disable method.
+	*	disables this class so that the methods do not process data.
+	*/
+	public static void disable() {
+		isEnabled = false;
+	}
+	
 	/*
 	* Description:
 	*	Entry point to send VolunteerJob data from SFDC to MongoDB
 	*   	This will retrieve the VolunteerJobs and send them to MongoDB
 	*/
 	public static void syncVolunteerJobs() {
+		// return if not enabled
+		If(!isEnabled)
+			return;
+		
 		// get the list of volunteer jobs to sync and instantiate VolunteerJobs domain object.
 		VolunteerJobs dVolJobs = new VolunteerJobs(VolunteerJobsSelector.newInstance().selectJobsForProcessing());
 		// convert sObjects to DTOs
@@ -34,6 +49,10 @@ public class MongoJobService extends MongoServiceBase {
 	*	MongoJob - the mongo response model object.
 	*/
 	public static MongoJob insertMongoDBVolunteerJobs(List<VolunteerJobsService.VolunteerJobDTO> jobDTOs) {
+		// return if not enabled
+		If(!isEnabled)
+			return null;
+
 		// get the http client
 		ffhttp_c52Mongo mongoClient = MongoServicebase.getC52MongoClient();
 		// get the VolunteerJobs resource

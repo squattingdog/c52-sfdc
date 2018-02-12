@@ -1,10 +1,11 @@
 @isTest
 public class CampaignsSelectorTest {
+	
 	static testMethod void testSelectById() {
 		Test.startTest();
-		
-		//disable campaign trigger to mongoDB
-		Campaigns.setSyncRecordsEnabled(false);
+
+		//disable campaign trigger
+		fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableAll();
 		
 		//test data
 		//setup a parent campaign
@@ -48,9 +49,9 @@ public class CampaignsSelectorTest {
 	
 	static testMethod void testSelectTopLevelVolunteerCampaigns() {
 		Test.startTest();
-		
-		//disable campaign trigger to mongoDB
-		Campaigns.setSyncRecordsEnabled(false);
+
+		//disable campaign trigger
+		fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableAll();
 		
 		//test data
 		//setup a parent campaign
@@ -100,8 +101,8 @@ public class CampaignsSelectorTest {
 	static testMethod void testSelectTopLevelVolunteerCampaignsForProcessing() {
 		Test.startTest();
 		
-		//disable campaign trigger to mongoDB
-		Campaigns.setSyncRecordsEnabled(false);
+		//disable campaign trigger
+		fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableAll();
 		
 		//test data
 		Campaign parentCampaign = ObjectsHelper.getCampaign(
@@ -119,7 +120,7 @@ public class CampaignsSelectorTest {
 		campaignObjs.add(ObjectsHelper.getCampaign(
 			'test campaign'
 			,true	//include for web
-			,false	//processed
+			,true	//processed
 			,parentCampaign
 			,Constants.RECORD_TYPE_VOLUNTEER_CAMPAIGN
 		));
@@ -137,6 +138,8 @@ public class CampaignsSelectorTest {
 			,null
 			,Constants.RECORD_TYPE_VOLUNTEER_CAMPAIGN
 		));
+		
+		insert campaignObjs;
 		
 		//test
 		List<Campaign> camps = CampaignsSelector.newInstance().selectTopLevelVolunteerCampaignsForProcessing();
