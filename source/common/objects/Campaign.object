@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>IncludeForWebMobile__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Includes the campaign in the sync data that is used for web and mobile sign-ups</description>
+        <externalId>false</externalId>
+        <label>Include for Web &amp; Mobile</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LogoImage__c</fullName>
+        <description>The Logo</description>
+        <externalId>false</externalId>
+        <formula>IMAGE( LogoURL__c, &apos;Group Logo&apos;, 84, 125)</formula>
+        <label>Logo Image</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LogoURL__c</fullName>
+        <description>The logo url for the campaign group</description>
+        <externalId>false</externalId>
+        <label>Logo URL</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Processed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>True = file has been processed.  False = will be picked up in next iteration of the processing job.</description>
+        <externalId>false</externalId>
+        <label>Processed</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>mongoId__c</fullName>
+        <externalId>true</externalId>
+        <label>Mongo ID</label>
+        <length>36</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+</CustomObject>
