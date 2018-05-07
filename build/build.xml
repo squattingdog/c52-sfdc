@@ -94,9 +94,9 @@
 	</target>
   
   <macrodef name="deploy">
-    <attribute name="deployUsername" default="${env.dev.username}"/>
-    <attribute name="deployPassword" default="${env.dev.password}"/>
-    <attribute name="deployServerUrl" default="${env.dev.endpoint}"/>
+    <attribute name="deployUsername" default="${env.username}"/>
+    <attribute name="deployPassword" default="${env.password}"/>
+    <attribute name="deployServerUrl" default="${env.endpoint}"/>
     <attribute name="deployRoot" default="${build.temp}"/>
     <attribute name="runTests" default="false"/>
     <sequential>

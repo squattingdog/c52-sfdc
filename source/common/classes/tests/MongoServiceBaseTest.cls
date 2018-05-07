@@ -6,10 +6,10 @@ public class MongoServiceBaseTest {
 		// Given
 		fflib_ApexMocks mocks = new fflib_ApexMocks();
 		Settings mockSettings = (Settings)mocks.mock(Settings.class);
-		Settings mockSettings = Settings.getInstance();
-		mockSettings.setMock(mockSettings);
+		//Settings mockSettings = Settings.getInstance();
+		Settings.setMock(mockSettings);
 		mocks.startStubbing();
-		mocks.
+		
 		
 		// When
 		ffHttp_C52Mongo client = MongoServiceBase.getC52MongoClient();
