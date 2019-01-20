@@ -70,9 +70,7 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 	*/
 	public override void onAfterInsert() {
 		//push data to mongoDB
-		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
-			System.enqueueJob(new CampaignsQueable());
-		}
+		this.updateC52ServiceData();
 	}
 	
 	/*
@@ -82,6 +80,23 @@ public with sharing class Campaigns extends fflib_SObjectDomain implements ICamp
 		//set processed flag to false so the record is picked up in sync process.
 		for(Campaign c : (List<Campaign>)this.Records) {
 			c.processed__c = false;
+		}
+	}
+
+	/*
+	* After update trigger event
+	*/
+	public override void onAfterUpdate(Map<Id,SObject> existingRecords) {			
+		// push data to MongoDB
+		this.updateC52ServiceData();
+	}
+
+	/*
+	* private method to enqueue a sync job to heroku mongo db
+	*/
+	private void updateC52ServiceData() {
+		if(this.Records.size() > 0 && Campaigns.syncEnabled) {
+			System.enqueueJob(new CampaignsQueueable());
 		}
 	}
 }

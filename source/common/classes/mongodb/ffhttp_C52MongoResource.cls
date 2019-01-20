@@ -9,7 +9,7 @@ public with sharing abstract class ffhttp_C52MongoResource {
 	//Mongo Routes / Collections
 	public static final String MONGO_CAMPAIGNS = '/campaign/';
 	public static final String MONGO_JOBS = '/job/';
-	public static final String MONGO_JOB_SHIFT = '/shift/';
+	public static final String MONGO_JOB_SHIFTS = '/shift/';
 	
 
 	//Instance variables

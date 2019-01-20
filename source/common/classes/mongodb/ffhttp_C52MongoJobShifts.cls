@@ -48,7 +48,7 @@ public with sharing class ffhttp_C52MongoJobShifts extends ffhttp_C52MongoResour
 	 public class VolunteerJobShiftsPostRequest extends C52MongoRequest {
 	 	VolunteerJobShiftsPostRequest(ffhttp_C52MongoJobShifts jobShifts, ffhttp_IHttpContent content) {
 	 		super(jobShifts
-	 			,C52MONGO_URL + C52MONGO_DB + MONGO_JOBS
+	 			,C52MONGO_URL + C52MONGO_DB + MONGO_JOB_SHIFTS
 	 			,REQUEST_METHOD_POST
 	 			,content
 	 			,new ffhttp_JsonDeserializer(MongoJobShift.class));	 	
@@ -61,7 +61,7 @@ public with sharing class ffhttp_C52MongoJobShifts extends ffhttp_C52MongoResour
 	 public class VolunteerJobShiftsPutRequest extends C52MongoRequest {
 	 	VolunteerJobShiftsPutRequest(ffhttp_C52MongoJobShifts jobShifts, string path, ffhttp_IHttpContent content) {
 	 		super(jobShifts
-	 			,C52MONGO_URL + C52MONGO_DB + MONGO_JOBS + path
+	 			,C52MONGO_URL + C52MONGO_DB + MONGO_JOB_SHIFTS + path
 	 			,REQUEST_METHOD_POST
 	 			,content
 	 			,new ffhttp_JsonDeserializer(MongoJobShift.class)); 	

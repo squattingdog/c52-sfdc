@@ -1,0 +1,42 @@
+// Campaigns Reset
+LIst<Campaign> campaignsToReset = [SELECT name, id, processed__c, mongoId__c FROM Campaign WHERE ParentId = null];
+
+system.debug(campaignsToReset);
+
+fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableBeforeUpdate();
+fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableAfterUpdate();
+for(Campaign c : campaignsToReset) {
+    c.processed__c = false;
+    c.mongoId__c = null;
+}
+
+update campaignsToReset;
+
+// Jobs Reset
+
+List<GW_Volunteers__Volunteer_Job__c> jobs = [SELECT Id,MongoId__c,Name,Processed__c FROM GW_Volunteers__Volunteer_Job__c where GW_Volunteers__Campaign__r.IncludeForWebMobile__c = true];
+system.debug(jobs);
+
+fflib_SObjectDomain.getTriggerEvent(VolunteerJobs.class).disableBeforeUpdate();		
+fflib_SObjectDomain.getTriggerEvent(VolunteerJobs.class).disableAfterUpdate();
+
+for(GW_Volunteers__Volunteer_Job__c job : jobs) {
+	job.Processed__c = false;
+    job.MongoId__c = null;
+}
+
+update jobs;
+
+// Shifts Reset
+List<GW_Volunteers__Volunteer_Shift__c> shifts = [SELECT Id,MongoID__c,Name,Processed__c FROM GW_Volunteers__Volunteer_Shift__c];
+system.debug(shifts);
+
+fflib_SObjectDomain.getTriggerEvent(VolunteerShifts.class).disableBeforeUpdate();		
+fflib_SObjectDomain.getTriggerEvent(VolunteerShifts.class).disableAfterUpdate();
+
+for(GW_Volunteers__Volunteer_Shift__c shift : shifts) {
+    shift.Processed__c = false;
+    shift.MongoId__c = null;
+}
+
+update shifts;

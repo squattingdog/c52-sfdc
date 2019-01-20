@@ -39,6 +39,7 @@ public class CampaignsServiceImpl implements ICampaignsService {
 	public void setMongoIds(List<Campaign> updtCampaigns) {
 		// disable trigger to prevent processed__c being set to false.
 		fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableBeforeUpdate();
+		fflib_SObjectDomain.getTriggerEvent(Campaigns.class).disableAfterUpdate();
 		
 		// update objects - mongoId and processed flag
 		fflib_ISobjectUnitOfWork uow = App.UnitOfWork.newInstance();

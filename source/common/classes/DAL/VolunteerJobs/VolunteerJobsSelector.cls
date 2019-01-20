@@ -102,6 +102,7 @@ public class VolunteerJobsSelector extends fflib_SObjectSelector {
 		return (List<GW_Volunteers__Volunteer_Job__c>)Database.query(
 			newQueryFactory().
 			setCondition('processed__c = false AND GW_Volunteers__Display_on_Website__c = true')
+			.setLimit(100)
 			.toSoql());
 	}
 }

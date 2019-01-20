@@ -6,8 +6,8 @@ public with sharing class VolunteerShiftsServiceImpl implements IVolunteerShifts
 	* Returns:
 	*	A list of VolunteerJobDTOs
 	*/
-	public List<VolunteerShiftsService.VolunteerShiftDTO> getVolunteerShiftDTOsByVolunteerJobIds(Set<ID> volunteerJobIds) {
-		List<GW_Volunteers__Volunteer_Shift__c> shiftList = VolunteerShiftsSelector.newInstance().selectByVolunteerJobId(volunteerJobIds);
+	public List<VolunteerShiftsService.VolunteerShiftDTO> getVolunteerShiftDTOs() {
+		List<GW_Volunteers__Volunteer_Shift__c> shiftList = VolunteerShiftsSelector.newInstance().selectShiftsForProcessing();
 		VolunteerShiftsService.VolunteerShiftDTOFactory factory = new VolunteerShiftsService.VolunteerShiftDTOFactory();
 		for(GW_Volunteers__Volunteer_Shift__c shift : shiftList) {
 			factory.add(shift);

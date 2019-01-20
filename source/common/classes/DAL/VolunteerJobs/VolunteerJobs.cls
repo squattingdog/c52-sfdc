@@ -67,9 +67,7 @@ public class VolunteerJobs extends fflib_SObjectDomain implements IVolunteerJobs
 	*/
 	public override void onAfterInsert() {	
 		//push data to mongoDB
-		if(this.Records.size() > 0 && VolunteerJobs.syncEnabled) {
-			System.enqueueJob(new JobsQueable());
-		}
+		this.updateC52ServiceData();
 	}
 	
 	/*
@@ -87,6 +85,13 @@ public class VolunteerJobs extends fflib_SObjectDomain implements IVolunteerJobs
 	*/
 	public override void onAfterUpdate(Map<Id,SObject> existingRecords) {			
 		// push data to MongoDB
+		this.updateC52ServiceData();
+	}
+
+	/*
+	* private method to enqueue a sync job to heroku mongo db
+	*/
+	private void updateC52ServiceData() {
 		if(this.Records.size() > 0 && VolunteerJobs.syncEnabled) {
 			System.enqueueJob(new JobsQueable());
 		}

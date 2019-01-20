@@ -21,7 +21,16 @@ public class MongoJobService extends MongoServiceBase {
 			return;
 		
 		// get the list of volunteer jobs to sync and instantiate VolunteerJobs domain object.
-		VolunteerJobs dVolJobs = new VolunteerJobs(VolunteerJobsSelector.newInstance().selectJobsForProcessing());
+		List<GW_Volunteers__Volunteer_Job__c> jobs = VolunteerJobsSelector.newInstance().selectJobsForProcessing();
+		
+		// return if there are not any records to update
+		if(jobs.size() < 1) {
+			return;
+		}
+
+		VolunteerJobs dVolJobs = new VolunteerJobs(jobs);
+
+		
 		// convert sObjects to DTOs
 		VolunteerJobsService.VolunteerJobDTOFactory jobFactory = new VolunteerJobsService.VolunteerJobDTOFactory();
 		dVolJobs.generate(jobFactory);

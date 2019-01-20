@@ -21,7 +21,14 @@ public class MongoJobShiftService extends MongoServiceBase{
 			return;
 		
 		// get the list of volunteer shifts to sync and instantiate VolunteerShifts domain object.
-		VolunteerShifts dVolShifts = new VolunteerShifts(VolunteerShiftsSelector.newInstance().selectShiftsForProcessing());
+		List<GW_Volunteers__Volunteer_Shift__c> shifts = VolunteerShiftsSelector.newInstance().selectShiftsForProcessing();
+
+		// if there are not any records, return
+		if(shifts.size() < 1) {
+			return;
+		}
+
+		VolunteerShifts dVolShifts = new VolunteerShifts(shifts);
 		// convert sObjects to DTOs
 		VolunteerShiftsService.VolunteerShiftDTOFactory shiftFactory = new VolunteerShiftsService.VolunteerShiftDTOFactory();
 		dVolShifts.generate(shiftFactory);

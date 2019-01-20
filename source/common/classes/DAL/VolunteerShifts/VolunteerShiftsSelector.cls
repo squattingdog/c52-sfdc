@@ -96,6 +96,7 @@ public with sharing class VolunteerShiftsSelector extends fflib_SObjectSelector 
 		return (List<GW_Volunteers__Volunteer_Shift__c>)Database.query(
 			newQueryFactory().
 			setCondition('processed__c = false AND GW_Volunteers__Volunteer_Job__r.GW_Volunteers__Display_on_Website__c = true')
+			.setLimit(100)
 			.toSoql());
 	}
 }

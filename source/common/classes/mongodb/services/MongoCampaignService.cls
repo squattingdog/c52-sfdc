@@ -7,6 +7,12 @@ public class MongoCampaignService extends MongoServiceBase {
 	public static void loadTopLevelVolunteerCampaigns() {
 		// get the list of campaigns to sync
 		List<Campaign> sfCampaigns = CampaignService.getInstance().getTopLevelVolunteerCampaignsForProcessing();
+
+		// return if there are not any records to update.
+		if(sfCampaigns.size() < 1) {
+			return;
+		}
+
 		// instantiate a campaign domain object
 		Campaigns dCampaigns = new Campaigns(sfCampaigns);
 		// convert the sObjects to DTOs

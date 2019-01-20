@@ -87,7 +87,8 @@ public Class CampaignsSelector  extends fflib_SObjectSelector {
 			newQueryFactory().
 			setCondition('RecordType.Name = \''
 				+ Constants.RECORD_TYPE_VOLUNTEER_CAMPAIGN
-				+ '\' AND Parent.ID = null AND IncludeForWebMobile__c = true AND Processed__c = false')
+				+ '\' AND Parent.ID = null AND IncludeForWebMobile__c = true AND Processed__c = false')			
+			.setLimit(100)
 			.toSoql());
 	}
 }

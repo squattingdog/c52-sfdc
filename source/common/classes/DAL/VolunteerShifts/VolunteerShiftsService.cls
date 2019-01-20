@@ -31,6 +31,14 @@ global with sharing class VolunteerShiftsService {
 	private static void setMock(VolunteerShiftsService i){
 		instance = i;
 	}
+
+	/*
+	* Description:
+	*	Gets the volunteer shifts
+	*/
+	global List<VolunteerShiftDTO> getVolunteerShiftDTOsForProcessing() {
+		return service().getVolunteerShiftDTOs();
+	}
 	
 	/*
 	* Description:
