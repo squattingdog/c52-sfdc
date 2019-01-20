@@ -60,9 +60,7 @@ public class VolunteerJobsSelector extends fflib_SObjectSelector {
 		Return GW_Volunteers__Volunteer_Job__c.SObjectType;
 	}
 	
-	/***
-	*  IVolunteerJobsSelector implementations
-	***/
+	
 	
 	/*
 	* Parameters:

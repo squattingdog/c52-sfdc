@@ -3,12 +3,13 @@ public with sharing abstract class ffhttp_C52MongoResource {
 	
 	//URLs
 	//C52 Mongo URLs
-	public static final String C52MONGO_URL = 'https://c52-sfdc-dev.herokuapp.com/';
+	public static final String C52MONGO_URL =Settings.getInstance().getMongoUrl();
 	public static final String C52MONGO_DB = Settings.getInstance().getMongoDBName();
 	
 	//Mongo Routes / Collections
 	public static final String MONGO_CAMPAIGNS = '/campaign/';
 	public static final String MONGO_JOBS = '/job/';
+	public static final String MONGO_JOB_SHIFT = '/shift/';
 	
 
 	//Instance variables

@@ -132,5 +132,12 @@ global with sharing class VolunteerJobsService {
 			this.zip = job.GW_Volunteers__Location_Zip_Postal_Code__c;
 			this.information = job.GW_Volunteers__Location_Information__c;
 		}
+
+		public VolunteerJobLocation(GW_Volunteers__Volunteer_Shift__c shift) {
+			this.city = shift.GW_Volunteers__Job_Location_City__c;
+			this.state = shift.GW_Volunteers__Job_Location_State_Province__c;
+			this.street = shift.GW_Volunteers__Job_Location_Street__c;
+			this.zip = shift.GW_Volunteers__Job_Location_Zip_Postal_Code__c;
+		}
 	}
 }

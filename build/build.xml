@@ -35,7 +35,7 @@
     </copy>
     <deploy />
   	<antcall target="cleanTemp" />
-    <echo>Deploying fflib common</echo>
+    <echo>Deploying fflib http</echo>
     <copy todir="${build.temp}" flatten="false" includeEmptyDirs="false">
       <fileset dir="../source/dependencies/fflib/ffhttp/src">
         <include name="**/*" />

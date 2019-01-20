@@ -34,6 +34,17 @@ public with sharing class Settings {
 	private static void setMock(Settings i){
 		instance = i;
 	}
+
+	/*
+	* Descriptoin:
+	*	Gets the mongo service URL
+	* Returns:
+	*	String - the base url.
+	*/
+	public String getMongoUrl() {
+		C52_MongoSettings__c mongoSettings = this.getMongoSettingsValues();
+		return mongoSettings == null ? null : mongoSettings.BaseUrl__c;
+	}
 	
 	/*
 	 * Description:
